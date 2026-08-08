@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup</title>
+    <link rel="stylesheet" href="signup.css">
+    <!-- SweetAlert CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
+    <!-- SweetAlert JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+</head>
+
+<body>
+    <div id="first-window">
+        <div id="top-bar">
+            <img id="top-bar-logo" src="images/logo-white-Photoroom.png" alt="CDP logo">
+          </div>
+        <div id="side-img">
+            <img id="clg-logo" src="../images/clg.png" alt="Institute Logo">
+            <p id="login-msg">Single Window Platform for Campus Recruitment</p>
+            <img id="cdp-logo" src="../images/logo.png" alt="Placement Cell Logo">
+        </div>
+        <div id="login-form">
+            <div>
+                <form id="signup-form-id" class="form" onsubmit="showotpform(event)">
+                    <div>
+                        <h3>Hello Students,
+                            <br>Let's get you registered !!
+                        </h3>
+                    </div>
+                        <div class="flex-column">
+                            <label>Name </label>
+                        </div>
+                        <div class="inputForm">
+                            <input type="text" class="input" id="name" placeholder="Enter your Name">
+                        </div>
+                        
+                        <div class="flex-column">
+                            <label>Roll Number </label>
+                        </div>
+                        <div class="inputForm">
+                            <input type="text" class="input" id="roll" pattern="[0-9]{4}[a-zA-Z]{3}-[0-9]{3}"
+                                placeholder="Enter your Roll Number(Format:2022BCS-019)">
+                        </div>
+                        
+                        <div class="flex-column">
+                            <label>Email </label>
+                        </div>
+                        <div class="inputForm">
+                            <input type="email" class="input" id="email" pattern="[a-zA-Z]{3}_[0-9]{7}@iiitm.ac.in"
+                                placeholder="Enter your Email">
+                        </div>
+                        
+                        <div class="flex-column">
+                            <label>Password </label>
+                        </div>
+                        <div class="inputForm">
+                            <input type="password" class="input" id="password" placeholder="Enter your Password">
+                        </div>
+
+                        <button class="button-submit">Register</button>
+                        
+                        <div id="otpform" >
+                            <div class="flex-column ">
+                                <label>OTP </label>
+                            </div>
+                            <div class="inputForm" >
+                                <input type="password" class="input" id="enteredOtp" placeholder="Enter OTP">
+                            </div>
+                            <button class="button-otp" onsubmit="Signupverify(event)" >Submit OTP</button>
+                        </div>
+                            
+                    
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="rules-window">
+        <div style="padding: 20px;">
+            <p style="font-size: 32px; text-align: center; color: indigo; font-weight:500;">RULES & GUIDELINES</p>
+        </div>
+        <button type="button" class="collapsible">ELIGIBILITY & REGISTRATION</button>
+        <div class="content">
+            <p>All students who expect to graduate from the Institute by the end of the academic year 2023-2024 and are
+                seeking employment may register for campus placements with this office. Placement Registration is for
+                ONE ACADEMIC YEAR ONLY. <br><br>
+                Registration for all programmes will be done during the month of August. <br><br>
+                MS & PhD scholars placement will happen round the year. Their registration will be valid for one year
+                only. They can register by attaching a certificate (NOC) & Abstract in the prescribed format available
+                in the Placement website. <br><br>
+                Inter-disciplinary (ID) Research Scholars will be permitted to upload resumes for both the departments
+                as approved at the time of admission to the program. The NoC for ID Research Scholars must be signed by
+                the guide from both the departments. <br><br>
+                Campus placement is a facility provided for the students. Registration is not compulsory. Students not
+                interested in placement are advised not to register for placement. <br><br>
+                <p class="bold">Backlogs:</p>
+                Students having backlog of 4 or more courses are not permitted to register for placement. Such students
+                are advised to clear the backlogs and then register after the July-November end semester examinations.
+                However, extended students can register in case of non-completion of course/project requirements in
+                their last two semesters. <br><br>
+                <p class="bold">Re-Registration:</p>
+                Students who have lost the job for genuine reasons will be allowed to re-register on a case to case
+                basis. <br><br>
+                Students who have graduated in 2024, but not placed due to various genuine reasons, may be permitted to
+                re-register with the approval of the concerned authorities. They will be permitted to appear for
+                placement only from Day 1 or later, as approved by the Board of Placements. <br><br>
+                Each registered student will be given a Placement Registration (PR) Number to access the placement
+                notices, company announcements and to upload resumes. <br>
+            </p>
+        </div>
+
+        <button type="button" class="collapsible">RESUME</button>
+        <div class="content">
+            <p>Students are advised to prepare their resume with care. Resume has to be uploaded on the placements
+                website. <br><br>
+                The format of resume is available in the placement website. This format is to be followed strictly. <br>
+                <br>
+                Details of projects done, papers presented, internships undergone and any other achievements should be
+                highlighted in the resume. <br><br>
+                The information given in the resume will be verified by the office. Any discrepancies found in the
+                resume at the time of verification will result in debarring of the student from the placement for the
+                rest of the academic year. <br><br>
+                At the time of appearing for the interview, students are advised to carry multiple copies of their
+                resume, photograph and other supporting documents. <br><br>
+                Once a student has uploaded the resume, it will be verified by a staff member of the placement office.
+                The student can make necessary corrections, if any, based on the queries raised by the staff member. <br>
+                <br>
+                The resume will be released to the company concerned, only after the verification process is completed.
+                <br><br>
+                Students are advised to avoid using the photographs of them wearing T-shirts, casual wear, etc. They
+                should be formally dressed in the photographs. <br>
+            </p>
+        </div>
+
+        <button type="button" class="collapsible">PRE-PLACEMENT TALKS (PPT)</button>
+        <div class="content">
+            <p>Notices of the PPT will be published in the Placement website well in advance. <br><br>
+                Students should occupy the venue 15-mintues before the scheduled start of the PPT. <br><br>
+                Students interested in a particular company, can attend the PPT of that company. Attendance for PPT is
+                not compulsory. <br><br>
+                Queries and clarifications, if any, may be clarified by the students with the company representatives
+                during PPT. <br><br>
+                A copy of the resume can be handed over to the company executive during the PPT, if required. <br>
+            </p>
+        </div>
+
+        <button type="button" class="collapsible">APPLICATIONS</button>
+        <div class="content">
+            <p>Students are advised to carefully read the Job Announcement Form (JAF) before applying to a company.
+                Students should apply only if they are eligible and interested. <br><br>
+                The placement office will publish the list of companies, along with the job profile, CTC and other
+                details. Students are advised to go through these details and apply only to the companies which meet
+                their expectations. <br><br>
+                Students are advised to avoid picking and choosing the companies and the roles. They should apply
+                generally for all the companies where they meet the eligibility criteria. <br><br>
+                The placement office will inform the students of the deadline for submitting applications. Students are
+                expected to meet the deadlines and apply on time. <br><br>
+                Resumes once submitted for a particular company cannot be withdrawn at a later stage. <br>
+            </p>
+        </div>
+
+        <button type="button" class="collapsible">INTERVIEW</button>
+        <div class="content">
+            <p>It is the responsibility of the student to check announcements/notices/ shortlisted names etc. in the
+                notice boards/website. <br><br>
+                Students are expected to be punctual and present themselves for the interview process as per the
+                notifications. <br><br>
+                A student who applies and gets shortlisted is bound to go through the entire selection process unless
+                rejected midway by the company. <br><br>
+                Any student who withdraws deliberately in the midst of a selection process will be disqualified from
+                placement for the rest of the academic year. <br><br>
+                Late comers for the Aptitude Test / Group Discussion / Interview may not be allowed to appear for the
+                selection process. <br><br>
+                Students should carry all the necessary documents like resume, photo, certificates, etc. <br><br>
+                Students should be formally dressed whenever they participate in any interaction with a company. <br><br>
+                Misbehaviour / indiscipline / irregularity will not be tolerated and students involved in such cases
+                will be debarred from placements for the rest of the academic year. <br>
+            </p>
+        </div>
+
+        <button type="button" class="collapsible">JOB OFFERS</button>
+        <div class="content">
+            <p>The copy of the offer letter is required to be submitted in the placement office. <br><br>
+                The company will send the offer letters to the placement office. The placement office will handover the
+                offer letters to the concerned students. <br><br>
+                Offers received from the companies need to be accepted or rejected by the student within 3 days of
+                receipt of the offer. <br><br>
+                All offers of a particular company will be announced at the end of the selection process of that company
+                only. <br><br>
+                In case, students decide not to join the company, they should inform the placement office in writing
+                along with the reason. <br><br>
+                Once an offer is accepted, the student is out of the campus placement process and will not be allowed to
+                apply to any other company. <br><br>
+                However, a student can apply to companies, which come with a dream offer provided that the CTC is 1.5
+                times higher than the first offer. <br><br>
+                A student can apply for a maximum of 2 dream offers. <br><br>
+                If a student receives an offer from a dream company, the earlier offer automatically stands released and
+                the student will be out of campus placements. <br><br>
+                A student with a single offer has the option to withdraw the offer and re-register for placement for a
+                dream company. The job offer can be withdrawn with the approval of the Professor-in-Charge, Placements
+                and with prior written consent from the company. Such a student is required to submit an undertaking
+                duly signed by the parent/guardian. <br>
+            </p>
+        </div>
+    </div>
+    <script src="signup.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>

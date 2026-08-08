@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            background-color: #f5f5f5;
+        }
+
+        .sidebar {
+            min-height: 100vh;
+            height: auto;
+            background-color: #140878;
+            color: white;
+            padding-top: 20px;
+        }
+
+        .sidebar a {
+            color: white;
+            text-decoration: none;
+            display: block;
+            padding: 10px 20px;
+            font-size: 1.1em;
+        }
+
+        .sidebar a:hover {
+            background-color: #4839d5;
+        }
+
+        .dashboard-content {
+            padding: 20px;
+        }
+
+        .details-button {
+            background-color: rgb(75, 75, 193);
+            color: white;
+            border: none;
+            height: 60px;
+            width: 100%;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        .details-button:hover {
+            background-color: #140878;
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+
+        .main-content {
+            flex-grow: 1;
+            background-color: #fff;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding: 20px;
+        }
+
+        .events-container {
+            padding: 20px;
+        }
+
+        .tabs {
+            display: flex;
+            width: 100%;
+            height: 50px;
+            margin-bottom: 20px;
+        }
+
+        .tab-button {
+            width: 33.33%;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+
+        .tab-button:hover {
+            background-color: #ccc;
+        }
+
+        .tab-button.active {
+            background-color: #4132c4;
+            color: white;
+        }
+
+        .applied-jobs {
+            padding-left: 20px;
+            font-size: 20px;
+            width: 100%;
+            height: 40px;
+            border-bottom: 5px gray solid;
+            margin: 20px;
+        }
+
+        .events {
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .event {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .event-firstpart {
+            display: flex;
+            padding: 20px;
+            width: 90%;
+            justify-content: space-between;
+        }
+
+        .event-name {
+            font-weight: bold;
+        }
+
+        .event-details-part {
+            padding: 0px;
+            width: 10%;
+            height: auto;
+        }
+
+        .navbar-toggler {
+            margin: 10px;
+        }
+
+        #navbarNav {
+            padding-left: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+
+            .main-content {
+                width: 100%;
+            }
+
+            .tab-button {
+                width: 100%;
+                text-align: center;
+            }
+
+            .applied-jobs {
+                font-size: 18px;
+                padding-left: 10px;
+            }
+
+            .event-firstpart {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .event-details-part {
+                width: 100%;
+                text-align: center;
+                padding-top: 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .event-firstpart {
+                flex-direction: column;
+            }
+
+            .event-name,
+            .event-date {
+                font-size: 14px;
+            }
+
+            .details-button {
+                height: 50px;
+                padding: 10px;
+                font-size: 14px;
+            }
+        }
+
+        .top-navbar {
+            background-color: #140878;
+        }
+
+        .top-navbar .nav-link {
+            color: white;
+            font-size: 1.1em;
+        }
+
+        .top-navbar .nav-link:hover {
+            background-color: #4839d5;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Top Navbar for smaller screens -->
+    <nav class="navbar navbar-expand-lg navbar-dark top-navbar d-md-none">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" id="top-jobs-btn"><i class="fa-solid fa-briefcase"></i> Jobs</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="top-home-btn"><i class="fas fa-home"></i> Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="top-applied-btn"><i class="fas fa-tasks"></i> Applied Jobs</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="top-profile-btn"><i class="fas fa-user"></i> My Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="top-logout-btn"><i class="fas fa-sign-out-alt"></i> Log Out</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <nav class="col-md-2 d-none d-md-block sidebar">
+                <div class="text-center mb-4">
+                    <img src="images/logo-white-Photoroom.png" alt="University Logo" class="img-fluid mb-4" style="margin-top:40px;">
+                    <div class="profile" style="display: flex; align-items: center;">
+                        <div style="text-align: center;">
+                            <h3 id="studentName"></h3>
+                        </div>
+                    </div>
+                    <a href="#" id="jobs-btn"><i class="fa-solid fa-briefcase"></i> Jobs</a>
+                    <a href="#" id="home-btn"><i class="fas fa-home"></i> Home</a>
+                    <a href="#" id="applied-btn"><i class="fas fa-tasks"></i> Applied Jobs</a>
+                    <a href="#" id="profile-btn"><i class="fas fa-user"></i> My Profile</a>
+                    <a id="logout-btn"><i class="fas fa-sign-out-alt"></i> Log Out</a>
+                </div>
+            </nav>
+
+            <main class="col-md-10 ms-sm-auto col-lg-10 px-md-4 main-content">
+                <div class="applied-jobs">
+                    Applied Jobs
+                </div>
+                <div class="events-container">
+                    <div class="events" id="applied-jobs"></div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchDrives();
+        });
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const stuId = urlParams.get('id');
+
+        document.getElementById('home-btn').addEventListener('click', () => {
+            window.location.href = `/homestu?id=${stuId}`;
+        });
+        document.getElementById('jobs-btn').addEventListener('click', () => {
+            window.location.href = `/stuhome?id=${stuId}`;
+        });
+        document.getElementById('applied-btn').addEventListener('click', () => {
+            window.location.href = `/stuAppliedJobs?id=${stuId}`;
+        });
+        document.getElementById('profile-btn').addEventListener('click', () => {
+            window.location.href = `/stuProfile?id=${stuId}`;
+        });
+        document.getElementById('top-home-btn').addEventListener('click', () => {
+            window.location.href = `/homestu?id=${stuId}`;
+        });
+        document.getElementById('top-jobs-btn').addEventListener('click', () => {
+            window.location.href = `/stuhome?id=${stuId}`;
+        });
+        document.getElementById('top-applied-btn').addEventListener('click', () => {
+            window.location.href = `/stuAppliedJobs?id=${stuId}`;
+        });
+        document.getElementById('top-profile-btn').addEventListener('click', () => {
+            window.location.href = `/stuProfile?id=${stuId}`;
+        });
+        document.addEventListener('DOMContentLoaded', async () => {
+            if (stuId) {
+                try {
+                    const response = await fetch(`/student/${stuId}`);
+                    if (response.ok) {
+                        const data = await response.json();
+                        document.getElementById('studentName').textContent = `${data.name}`;
+                    } else {
+                        document.getElementById('studentName').textContent = 'Student not found';
+                    }
+                } catch (error) {
+                    console.error('Error fetching student details:', error);
+                    document.getElementById('studentName').textContent = 'Error fetching student details';
+                }
+            } else {
+                document.getElementById('studentName').textContent = 'No student ID provided';
+            }
+        });
+
+        async function fetchDrives() {
+            try {
+                const response = await fetch(`/studrivesList?id=${stuId}`);
+                const applied_drives = await response.json();
+                renderDrives(applied_drives);
+            } catch (error) {
+                console.log('Error fetching drives:', error);
+            }
+        }
+
+        function renderDrives(applied_drives) {
+            const appliedJobsContainer = document.getElementById('applied-jobs');
+            appliedJobsContainer.innerHTML = '';
+
+            applied_drives.forEach((drive) => {
+                const driveElement = document.createElement('div');
+                driveElement.className = 'event';
+                driveElement.innerHTML = `
+            <div class="event-firstpart">
+                <span class="event-name">${drive.name}</span>
+                <span class="event-date">Date Of Event: ${new Date(drive.dateOfDrive).toLocaleDateString()}</span>
+            </div>
+            <div class="event-details-part">
+                <button class="details-button" onclick="goToDetails('${drive._id}')">Details</button>
+            </div>
+        `;
+                appliedJobsContainer.appendChild(driveElement);
+            });
+        }
+
+        function goToDetails(driveId) {
+            window.location.href = `/stuDrive?did=${driveId}&sid=${stuId}`;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const logoutBtn = document.querySelector('#logout-btn');
+            const logoutBtn2 = document.querySelector('#top-logout-btn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', async (event) => {
+                    event.preventDefault();
+
+                    try {
+                        const response = await fetch('/logout', { method: 'GET' });
+
+                        if (response.ok) {
+                            alert('Logout successful!');
+                            window.location.href = '/';
+                        } else {
+                            alert('Error logging out. Please try again.');
+                        }
+                    } catch (error) {
+                        console.error('Error:', error);
+                        alert('An error occurred during logout. Please try again.');
+                    }
+                });
+            }
+
+            if(logoutBtn2) {
+                logoutBtn2.addEventListener('click', async (event) => {
+                    event.preventDefault();
+
+                    try {
+                        const response = await fetch('/logout', { method: 'GET' });
+
+                        if (response.ok) {
+                            alert('Logout successful!');
+                            window.location.href = '/';
+                        } else {
+                            alert('Error logging out. Please try again.');
+                        }
+                    } catch (error) {
+                        console.error('Error:', error);
+                        alert('An error occurred during logout. Please try again.');
+                    }
+                });
+            }
+        });
+
+        window.addEventListener('pageshow', function (event) {
+            if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
+                window.location.reload();
+            }
+        });
+    </script>
+</body>
+
+</html>

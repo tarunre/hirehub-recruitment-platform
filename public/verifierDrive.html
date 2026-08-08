@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verifier Drive Details</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .sidebar {
+            min-height: 100vh;
+            height: auto;
+            background-color: #140878;
+            color: white;
+            padding: 20px;
+        }
+
+        .sidebar a {
+            color: white;
+            text-decoration: none;
+            display: block;
+            padding: 10px;
+            font-size: 1em;
+        }
+
+        .sidebar a:hover {
+            background-color: #4839d5;
+            border-radius: 6px;
+        }
+
+        .main-content {
+            padding: 20px;
+        }
+
+        .header {
+            background-color: #ffffff;
+            padding: 20px;
+            border-bottom: 2px solid #eaeaea;
+        }
+
+        .btn-custom {
+            background-color: #140878;
+            color: white;
+        }
+
+        .btn-custom:hover {
+            background-color: #4839d5;
+            color: white;
+        }
+
+        .job-description {
+            border-left: 2px solid #eaeaea;
+            padding-left: 20px;
+        }
+
+        .btn-container {
+            margin-top: 20px;
+        }
+
+        .btn-accept {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+
+        .btn-accept:hover {
+            background-color: #218838;
+        }
+
+        .btn-reject {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .btn-reject:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <nav class="col-md-2 d-none d-md-block sidebar">
+                <div class="text-center mb-4">
+                    <img src="images/logo-white-Photoroom.png" alt="University Logo" class="img-fluid mb-3" style="padding-top: 40px;">
+                    <div class="mb-3">
+                        <h3 class="mt-2" style="padding-top:20px">Verifier Name</h3>
+                        <h4 style="padding-top:15px;"><b>Verifier</b></h4>
+                    </div>
+                    <a href="#"><i class="fas fa-car"></i> Drive Details</a>
+                    <a href="#"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                </div>
+            </nav>
+            <main class="col-md-10 ms-sm-auto col-lg-10 px-md-4">
+                <div class="header d-flex justify-content-between align-items-center">
+                    <h1>Drive Details</h1>
+                </div>
+                <div class="main-content">
+                    <div class="row">
+                        <div class="col-md-4 col-lg-8 job-description" id="drive-details">
+                            <!-- Drive details will be populated here -->
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', fetchDriveDetails);
+
+        async function fetchDriveDetails() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const driveId = urlParams.get('id');
+            // console.log(driveId);
+            try {
+                const response = await fetch(`http://localhost:5500/recdrives/${driveId}`);
+                if (!response.ok) {
+                    throw new Error('Failed to fetch drive details');
+                }
+                const { drive, user } = await response.json();
+                renderDriveDetails(drive, user);
+            } catch (error) {
+                console.error('Error fetching drive details:', error);
+                // Handle error display or retry logic
+            }
+        }
+
+        function renderDriveDetails(drive, user) {
+            const driveDetailsContainer = document.getElementById('drive-details');
+            if (!drive || Object.keys(drive).length === 0) {
+                driveDetailsContainer.innerHTML = '<p>Error: Drive details not found or incomplete.</p>';
+                return;
+            }
+
+            driveDetailsContainer.innerHTML = `
+                <p><strong>Name:</strong> ${drive.name}</p>
+                <p><strong>Contact:</strong> ${user.mobile} </p>
+                <p><strong>Programs:</strong> ${drive.programs.join(', ')}</p>
+                <p><strong>Batch:</strong> ${drive.batch}</p>
+                <p><strong>CGPA:</strong> ${drive.cgpa}</p>
+                <p><strong>Backlogs:</strong> ${drive.backlogs}</p>
+                <p><strong>Max:</strong> ${drive.max}</p>
+                <p><strong>Date of Drive:</strong> ${new Date(drive.dateOfDrive).toLocaleDateString()}</p>
+                <p><strong>Last Date of Application:</strong> ${new Date(drive.lastDateOfApplication).toLocaleDateString()}</p>
+                <p><strong>Designations:</strong> ${drive.designations.join(', ')}</p>
+                <p><strong>Job Description:</strong> ${drive.jobDescription}</p>
+                <div class="btn-container">
+                    <button id="btn-accept" class="btn-accept"><i class="fas fa-check"></i>&nbsp; Accept</button>
+                    <button id="btn-reject" class="btn-reject"><i class="fas fa-times"></i> &nbsp; Reject</button>
+                </div>
+            `;
+
+            // Add event listeners to accept and reject buttons
+            document.getElementById('btn-accept').addEventListener('click', () => confirmUpdateDriveStatus('accepted'));
+            document.getElementById('btn-reject').addEventListener('click', () => confirmUpdateDriveStatus('rejected'));
+
+            if (drive.isAccepted === true || drive.isRejected === true) {
+                document.querySelector('.btn-container').style.display = 'none';
+            }
+        }
+
+        function confirmUpdateDriveStatus(status) {
+            const confirmation = confirm(`Are you sure you want to ${status} this drive?`);
+            if (confirmation) {
+                updateDriveStatus(status);
+            }
+        }
+
+        async function updateDriveStatus(status) {
+            const urlParams = new URLSearchParams(window.location.search);
+            const driveId = urlParams.get('id');
+
+            try {
+                await fetch(`http://localhost:5500/recdrives/${driveId}/status`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ status })
+                });
+                alert(`Drive ${status} successfully.`);
+                document.querySelector('.btn-container').style.display = 'none';
+                fetchDriveDetails(); // Refresh details after status update
+                // document.querySelector('.btn-container').classList.add('hide-btn');
+
+            } catch (error) {
+                console.error(`Error updating drive status:`, error);
+                // Handle error display or retry logic
+            }
+        }
+
+    </script>
+</body>
+
+</html>

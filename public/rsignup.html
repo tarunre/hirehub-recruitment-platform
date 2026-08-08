@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="rsignup.css">
+  <!-- SweetAlert CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
+  <!-- SweetAlert JS -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+</head>
+<body>
+    <div id="first-window">
+      <div id="top-bar">
+        <img id="top-bar-logo" src="images/logo-white-Photoroom.png" alt="CDP logo">
+      </div>
+        <div id="side-img"> 
+            <img  id="clg-logo" src="../images/clg.png" alt="Institute Logo">
+            <p id="login-msg">Single Window Platform for Campus Recruitment</p>
+            <img id="cdp-logo" src="../images/logo.png" alt="Placement Cell Logo">
+        </div>
+        <div id="login-form">
+            <div>
+                <form id="rec-signup"  class="form" onsubmit="showotpform(event)">
+                    <h3>Hello Recruiters,
+                    <br>Let us get you registered !!</h3>
+                     <div class="flex-column">
+                      <label>Name </label></div>
+                      <div class="inputForm">
+                        <input type="text" class="input" id="name" placeholder="Enter your Name">
+                      </div>
+                      <div class="flex-column">
+                        <label>Company Name </label></div>
+                        <div class="inputForm">
+                          <input type="text" class="input" id="company" placeholder="Enter the Company Name">
+                        </div>
+  
+                      <div class="flex-column">
+                        <label>Mobile Number </label></div>
+                        <div class="inputForm">
+                          <input type="tel" class="input" id="mobile" pattern="[0-9]{10}" placeholder="Enter your Mobile Number"> 
+                        </div>
+  
+                      <div class="flex-column">
+                        <label>Email </label></div>
+                        <div class="inputForm">
+                          <input type="email" class="input" id="email" placeholder="Enter your Email">
+                        </div>
+                      
+                      <div class="flex-column">
+                      <label>Password </label></div>
+                      <div class="inputForm">
+                          <input type="password" class="input" id="password" placeholder="Enter your Password"> 
+                      </div>
+                      
+                      <button class="button-submit">Register</button>          
+                      
+                      <div id="otpform" >
+                        <div class="flex-column">
+                          <label>OTP </label></div>
+                          <div class="inputForm">
+                              <input type="password" class="input" id="enteredOtp" placeholder="Enter OTP"> 
+                          </div>
+                        <button class="button-otp" onsubmit="Signupverify(event)" >Submit OTP</button>
+                      </div>
+                    </form>
+            </div>
+        </div>
+    </div>
+    <script src="rsignup.js"></script>
+</body>
+</html>

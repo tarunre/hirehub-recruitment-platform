@@ -1,0 +1,184 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: rgba(234, 234, 234, 0.868);
+}
+
+.container {
+    display: flex;
+    height: 100vh;
+}
+
+.mb-3 {
+    width: 100%;
+}
+
+.sidebar {
+    background-color: #140878;
+    color: white;
+    height: 100%;
+    width: 15vw;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+}
+
+.profile {
+    display: flex;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.profile img {
+    width: 60px;
+    height: 60px;
+    border: 2px solid brown;
+}
+
+.profile div {
+    padding-left: 10px;
+    text-align: left;
+}
+
+#heading {
+    font-size: 26px;
+    margin: 20px 0 5px;
+    text-shadow: 5px;
+}
+
+
+.profile p {
+    margin: 0;
+}
+
+nav a {
+    text-decoration: none;
+    color: white;
+    display: block;
+    padding: 16px 0;
+    border-radius: 4px;
+    text-align: center;
+}
+
+nav a:hover {
+    background-color: #7062e9;
+}
+
+.main-content {
+    padding: 0 20px;
+}
+.main-content>div>h2 {
+    border-bottom: 1px navy solid;
+    padding-bottom: 10px;
+}
+
+.selected {
+    background-color: #4CAF50;
+    color: white;
+    display: inline-block;
+    padding: 5px 10px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+}
+
+.job-detail {
+    background-color: inherit;
+    padding: 20px;
+    margin-right: 20px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.job-left {
+    display: flex;
+    width: 60%;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 40px;
+    margin-right: 50px;
+    border-bottom: 2px #c4c3c3 solid;
+
+}
+
+.company-logo {
+    width: 100px;
+    height: 100px;
+    padding: 30px;
+    
+}
+
+.company-info {
+    font-size: 14px;
+    color: #333;
+    padding-bottom: 20px;
+}
+
+.company-info h2 {
+    margin: 0;
+    font-size: 21px;
+    color: #333;
+    
+}
+
+.job-right h2 {
+    font-size: 20px;
+    padding: 5px;
+    margin-left: 5px;
+    display: inline;
+    text-decoration: underline;
+    color: navy;
+    margin-bottom: 15px;
+}
+
+.job-info {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.job-info-table {
+    font-size: 15px;
+    width: 60vw;
+    border-collapse: collapse;
+}
+
+.job-info-table th,
+.job-info-table td {
+    padding: 12px;
+    vertical-align: top;
+}
+
+.job-info-table th {
+    text-align: left;
+    color: #140878;
+    width: 30%;
+}
+
+.job-info-table td {
+    color: #333;
+}
+
+#apply-btn {
+    background-color: navy;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    text-align: center;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.2s ease;
+    position: absolute;
+    right: 50px;
+}
+
+#apply-btn:hover {
+    background-color: #000080; /* Darker navy */
+}
+
+#apply-btn:active {
+    background-color: white; /* Even darker navy */
+    color: navy;
+    border: 1px navy solid;
+}

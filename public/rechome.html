@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>IIITM - Recruiter Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
+
+
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+
+        .sidebar {
+            width: 17vw;
+            background-color: #140878;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .logo img {
+            width: 180px;
+            height: auto;
+            color: white;
+        }
+
+        .profile {
+            display: flex;
+            align-items: center;
+            margin: 40px 0;
+        }
+
+        .profile-logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+            color: white;
+        }
+
+        .profile-info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .profile-name {
+            font-weight: bold;
+            color: white;
+        }
+
+        .profile-role {
+            font-size: 0.9em;
+            color: white;
+        }
+
+        .nav-menu ul {
+            list-style: none;
+            width: 100%;
+        }
+
+        .nav-menu li {
+            margin: 4px 0;
+            padding: 5px 0;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+            display: block;
+            padding: 10px 0;
+            border-radius: 5px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .nav-menu a.active,
+        .nav-menu a:hover {
+            background-color: #655dad;
+        }
+
+        .main-content {
+            flex-grow: 1;
+            width: 20vw;
+            background-color: #fff;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .events-container {
+            padding: 20px;
+        }
+
+        .tabs {
+            display: flex;
+            width: 100%;
+            height: 50px;
+            margin-bottom: 20px;
+        }
+
+        .tab-button {
+            width: 33.33%;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+
+        .tab-button:hover {
+            background-color: #ccc;
+        }
+
+        .tab-button.active {
+            background-color: #4132c4;
+            color: white;
+        }
+
+        .my-profile {
+            padding-left: 20px;
+            font-size: 20px;
+            width: 100%;
+            height: 40px;
+            border-bottom: 5px gray solid;
+            margin: 20px;
+        }
+
+        .events {
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .event {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .event-firstpart {
+            display: flex;
+            padding: 20px;
+            width: 90%;
+            justify-content: space-between;
+        }
+
+        .event-name {
+            font-weight: bold;
+        }
+
+        .event-details-part {
+            padding: 0px;
+            width: 10%;
+            height: auto;
+        }
+
+        .details-button {
+            background-color: rgb(75, 75, 193);
+            color: white;
+            border: none;
+            height: 60px;
+            width: 100%;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 4px;
+
+        }
+
+        .details-button:hover {
+            background-color: #140878;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            
+                <img src="images/logo-white-Photoroom.png" alt="IIITM University" class="img-fluid mb-3" style="padding-top:30px;width:118%;height:33%">
+           
+            <div class="profile">
+                
+                <div class="profile-info" style="text-align: center;">
+                    <h2 class="profile-name" id="recruiterName"></h2>
+                    <h3 class="profile-role" style="padding-top: 30px;font-size:24px"><b>Recruiter</b></h3>
+                </div>
+            </div>
+            <nav class="nav-menu">
+                <ul>
+                    <li><a href="#" class="active">Drives</a></li>
+                    <li id="home-btn"><a href="#">Home</a></li>
+                    <li id="newdrive"><a href="#">Create New Drive</a></li>
+                    <li id="logout-btn"><a href="/logout" >Logout</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <div class="my-profile">
+                DRIVES
+            </div>
+            <div class="events-container">
+                <div class="tabs">
+                    <button class="tab-button active" id="requested-btn" >Requested Drives</button>
+                    <button class="tab-button" id="current-btn">Current Drives</button>
+                    <button class="tab-button" id="past-btn">Past Drives</button>
+                </div>
+            </div>
+            <div class="events" id="requested"></div>
+            <div class="events" id="current" style="display: none;">
+            </div>
+            <div class="events" id="past" style="display: none;">
+            </div>
+    </div>
+    </main>
+
+    </div>
+    <script>
+        requestedBtn = document.getElementById('requested-btn').addEventListener("click", function() { showTab('requested'); })
+        currentBtn = document.getElementById('current-btn').addEventListener("click", function() { showTab('current'); })
+        pastBtn = document.getElementById('past-btn').addEventListener("click", function() { showTab('past'); })
+
+        function showTab(tabName) {
+            const tabs = document.querySelectorAll('.events');
+            tabs.forEach(tab => {
+                tab.style.display = 'none';
+            });
+            document.getElementById(tabName).style.display = 'block';
+
+            const buttons = document.querySelectorAll('.tab-button');
+            buttons.forEach(button => {
+                button.classList.remove('active');
+            });
+            document.getElementById(`${tabName}-btn`).classList.add('active');
+
+            localStorage.setItem('activeTab', tabName);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchDrives();
+
+            const activeTab = localStorage.getItem('activeTab') || 'requested';
+            showTab(activeTab);
+        });
+
+        async function fetchDrives() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const recId = urlParams.get('id');
+            try {
+                const response = await fetch(`http://localhost:5500/recdrivesList/${recId}`);
+                const combined_drives = await response.json();
+
+                renderDrives(combined_drives);
+            } catch (error) {
+                console.log('Error fetching drives:', error);
+            } 
+        }
+
+        function renderDrives(combined_drives) {
+            const requestedContainer = document.getElementById('requested');
+            const currentContainer = document.getElementById('current');
+            const pastContainer = document.getElementById('past');
+            const urlParams=new URLSearchParams(window.location.search)
+            const recid= urlParams.get('id')
+            requestedContainer.innerHTML = '';
+            currentContainer.innerHTML = '';
+            pastContainer.innerHTML = '';
+
+            const currentDate = new Date();
+
+            combined_drives.forEach( (drive) => {
+                const driveDate = new Date(drive.dateOfDrive);
+                const daysDifference = (currentDate - driveDate) / (1000 * 60 * 60 * 24);
+
+                if (daysDifference > 90) {
+                    return; 
+                }
+
+                const driveElement = document.createElement('div');
+                driveElement.className = 'event';
+                driveElement.innerHTML = `
+                    <div class="event-firstpart">
+                        <span class="event-name">${drive.name}</span>
+                        <span class="event-date">Date Of Event: ${new Date(drive.dateOfDrive).toLocaleDateString()}</span>
+                    </div>
+                    <div class="event-details-part">
+                        <button class="details-button" onclick="goToDetails('${drive._id}','${recid}')">Details</button>
+                    </div>
+                `;
+
+                if (!drive.isAccepted && !drive.isRejected) {
+                    requestedContainer.appendChild(driveElement);
+                } else if (drive.isAccepted) {
+                    currentContainer.appendChild(driveElement);
+                }
+                // else {
+                //     pastContainer.appendChild(driveElement);
+                // }
+            });
+        };
+        const urlParams=new URLSearchParams(window.location.search)
+        const id= urlParams.get('id')
+        function goToDetails(driveId,recId) {
+            window.location.href = `/drivedetails?id=${driveId}&recid=${recId}`;
+        }
+       
+   
+        document.getElementById('home-btn').addEventListener('click', () => {
+            window.location.href = `/homerec?id=${id}`;
+        })
+        const newdrive=document.getElementById('newdrive')
+        newdrive.addEventListener('click',()=>{
+            window.location.href=`/createdrive?id=${id}`
+        })
+
+        document.addEventListener('DOMContentLoaded', async () => {
+           
+        
+            if (id) {
+                try {
+                    const response = await fetch(`/recruiter/${id}`);
+                    if (response.ok) {
+                        const data = await response.json();
+                        document.getElementById('recruiterName').textContent = `${data.name}`;
+                    } else {
+                        document.getElementById('recruiterName').textContent = 'Recruiter not found';
+                    }
+                } catch (error) {
+                    console.error('Error fetching recruiter details:', error);
+                    document.getElementById('recruiterName').textContent = 'Error fetching recruiter details';
+                }
+            } else {
+                document.getElementById('recruiterName').textContent = 'No recruiter ID provided';
+            }
+        });   
+        document.addEventListener('DOMContentLoaded', () => {
+            const logoutBtn = document.querySelector('#logout-btn'); // Assuming there's a logout button with this ID
+        
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', async (event) => {
+                    event.preventDefault();
+        
+                    try {
+                        const response = await fetch('/logout', { method: 'GET' });
+        
+                        if (response.ok) {
+                            alert('Logout successful!');
+                            window.location.href = '/';
+                        } else {
+                            alert('Error logging out. Please try again.');
+                        }
+                    } catch (error) {
+                        console.error('Error:', error);
+                        alert('An error occurred during logout. Please try again.');
+                    }
+                });
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            async function checkSession() {
+                try {
+                    const response = await fetch('/check-session', { method: 'GET' });
+                    if (response.ok) {
+                        const result = await response.json();
+        
+                        // Check if the user is already on the rechome page
+                        const currentPath = window.location.pathname;
+        
+                        if (currentPath !== '/rechome') {
+                            window.location.href = `/rechome?id=${result.id}`;
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error checking session:', error);
+                }
+            }
+        
+            checkSession(); // Call the async function here
+        });
+
+        /*document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const response = await fetch('/check-session', { method: 'GET' });
+        
+                if (!response.ok) {
+                    window.location.href = '/rlogin';
+                }
+            } catch (error) {
+                console.error('Error checking session:', error);
+                window.location.href = '/rlogin';
+            }
+        });*/
+        window.addEventListener('pageshow', function (event) {
+            if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
+                // If coming back to the page from cache, reload the page
+                window.location.reload();
+            }
+        });
+        
+        
+        
+    </script>
+</body>
+
+</html>

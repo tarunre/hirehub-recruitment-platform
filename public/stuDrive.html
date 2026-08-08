@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manipal University - Drives Detail</title>
+    <link rel="stylesheet" href="stuDrive.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <div>
+            <nav class="col-md-2 d-none d-md-block sidebar">
+                <div class="text-center mb-4">
+                    <img src="images/logo-white-Photoroom.png" alt="University Logo" class="img-fluid mb-3">
+                    <div class="profile" style="display: flex; align-items: center;">
+                        <div style="text-align: center;">
+                            <h4 id="studentName" style="margin-left: 10px;"></h4>
+                            <p id="programName"></p>
+                        </div>
+                    </div>
+                    <a href="#" id="jobs-btn"><i  class="fa-solid fa-briefcase" ></i> Jobs</a>
+                    <a href="#" id="home-btn"><i class="fas fa-home"></i>Home</a>
+                    <a href="#" id="applied-jobs"><i class="fas fa-tasks"></i> Applied Jobs</a>
+                    <a href="#" id="profile-btn"><i class="fas fa-user"></i> My Profile</a>
+                    <a href="/logout" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Log Out</a>
+                </div>
+            </nav>
+        </div>
+        <div class="main-content">
+            <div>
+                <h2 id="heading">Drive Details</h2>
+            </div>
+            <div class="job-detail">
+                <div class="job-right">
+                    <h2>Job Description</h2>
+                    <br><br>
+                    <div class="job-info">
+                        <table class="job-info-table">
+                            <tbody id="drive-details">
+                                <!-- Drive details will be populated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <button id="apply-btn">Apply Now</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', fetchDriveDetails);
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const driveId = urlParams.get('did');
+        const stuId = urlParams.get('sid');
+        
+        document.getElementById('home-btn').addEventListener('click', () => {
+            window.location.href = `/homestu?id=${stuId}`;
+        })
+        document.getElementById('jobs-btn').addEventListener('click', () => {
+            window.location.href = `/stuhome?id=${stuId}`;
+        })
+
+        document.getElementById('applied-jobs').addEventListener('click', () => {
+            window.location.href = `/stuAppliedJobs?id=${stuId}`
+        });
+
+        document.getElementById('profile-btn').addEventListener('click', () => {
+            window.location.href = `/stuProfile?id=${stuId}`
+        });
+
+        document.addEventListener('DOMContentLoaded', async () => {
+           
+        
+            if (stuId) {
+                try {
+                    const response = await fetch(`/student/${stuId}`);
+                    if (response.ok) {
+                        const data = await response.json();
+                        document.getElementById('studentName').textContent = `${data.name}`;
+
+                    } else {
+                        document.getElementById('studentName').textContent = 'Student not found';
+                    }
+                } catch (error) {
+                    console.error('Error fetching student details:', error);
+                    document.getElementById('studentName').textContent = 'Error fetching student details';
+                }
+            } else {
+                document.getElementById('studentName').textContent = 'No student ID provided';
+            }
+        });
+
+        async function fetchDriveDetails() {
+            try {
+                const response = await fetch(`/studrives?id=${driveId}&sid=${stuId}`);
+                if (!response.ok) {
+                    throw new Error('Failed to fetch drive details');
+                }
+                const { drive, user } = await response.json();
+                renderDriveDetails(drive, user);
+            } catch (error) {
+                console.error('Error fetching drive details:', error);
+                // Handle error display or retry logic
+            }
+        }
+
+        function renderDriveDetails(drive, user) {
+            const driveDetailsContainer = document.getElementById('drive-details');
+            if (!drive || Object.keys(drive).length === 0) {
+                driveDetailsContainer.innerHTML = '<tr><td colspan="2">Error: Drive details not found or incomplete.</td></tr>';
+                return;
+            }
+
+            driveDetailsContainer.innerHTML = `
+        <tr>
+            <th style="vertical-align: top;">Designations</th>
+            <td style="vertical-align: top;">
+                <ul style="list-style-type:disc; margin:0; padding-left: 15px">
+                    ${drive.designations.map(designation => `<li style="padding-bottom: 7px;">${designation}</li>`).join('')}
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <th>Package</th>
+            <td>${drive.min} LPA - ${drive.max} LPA</td>
+        </tr>
+        <tr>
+            <th>Drive Date</th>
+            <td>${new Date(drive.dateOfDrive).toLocaleDateString()}</td>
+        </tr>
+        <tr>
+            <th>Apply Before</th>
+            <td>${new Date(drive.lastDateOfApplication).toLocaleDateString()}</td>
+        </tr>
+        <tr>
+            <th style="vertical-align: top;">Programs</th>
+            <td style="vertical-align: top;">
+                <ul style="list-style-type:disc; margin:0; padding-left: 15px">
+                    ${drive.programs.map(program => `<li style="padding-bottom: 7px;">${program}</li>`).join('')}
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <th>Criteria</th>
+            <td>
+                <ul style="list-style-type:none; margin:0; padding:0">
+                    <li style="padding-bottom: 10px;"><b>Max Backlogs:</b> ${drive.backlogs}</li>
+                    <li><b>CGPA :</b> ${drive.cgpa}</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <th>Description</th>
+            <td>${drive.jobDescription}</td>
+        </tr>
+        `;
+
+            if (user.isApplied) {
+                const applyBtn = document.getElementById('apply-btn');
+                applyBtn.innerHTML = 'Applied';
+                applyBtn.style.backgroundColor = 'green';
+                applyBtn.disabled = true;
+                applyBtn.style.cursor='no-drop'
+            }
+        }
+
+        document.getElementById('apply-btn').addEventListener('click', () => {
+            window.location.href = `/stuConsentForm?did=${driveId}&sid=${stuId}`;
+        })
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const logoutBtn = document.querySelector('#logout-btn'); // Assuming there's a logout button with this ID
+        
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', async (event) => {
+                    event.preventDefault();
+        
+                    try {
+                        const response = await fetch('/logout', { method: 'GET' });
+        
+                        if (response.ok) {
+                            alert('Logout successful!');
+                            window.location.href = '/';
+                        } else {
+                            alert('Error logging out. Please try again.');
+                        }
+                    } catch (error) {
+                        console.error('Error:', error);
+                        alert('An error occurred during logout. Please try again.');
+                    }
+                });
+            }
+        });
+        window.addEventListener('pageshow', function (event) {
+            if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
+                // If coming back to the page from cache, reload the page
+                window.location.reload();
+            }
+        });
+    </script>
+</body>
+
+</html>

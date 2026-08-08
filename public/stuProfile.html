@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Login</title>
+    <link rel="stylesheet" href="stuProfile.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <div>
+            <nav class="col-md-2 d-none d-md-block sidebar">
+                <div class="text-center mb-4">
+                    <img src="images/logo-white-Photoroom.png" alt="University Logo" class="img-fluid mb-3" style="margin-top:40px;">
+                    <div class="profile" style="display: flex; align-items: center;">
+                        <div style="text-align: center;">
+                            <h3 id="studentName" ></h3>
+                            <p id="programName"></p>
+                        </div>
+                    </div>
+                    <a href="#" id="jobs-btn"><i  class="fa-solid fa-briefcase" ></i> Jobs</a>
+                    <a href="#" id="home-btn"><i class="fas fa-home"></i>Home</a>
+                    <a href="#" id="applied-jobs"><i class="fas fa-tasks"></i> Applied Jobs</a>
+                    <a href="#"><i class="fas fa-user"></i> My Profile</a>
+                    <a href="/logout" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Log Out</a>
+                </div>
+            </nav>
+        </div>
+
+        <div class="main-content">
+            <header>
+                <h1>My Profile</h1>
+            </header>
+
+            <section class="profile-details">
+                <div class="edit-profile" onclick="toggleEditMode()">
+                    <i class="fas fa-pencil-alt"></i>
+                </div>
+
+                <!-- View Mode -->
+                <div id="viewMode">
+                    <table id="view-mode-table">
+
+
+
+                    </table>
+                </div>
+
+                <!-- Edit Mode -->
+                <form id="profileForm" enctype="multipart/form-data" style="display:none;"
+                    onsubmit="submitChanges(event)">
+                    <table id="edit-mode-table">
+
+
+
+                        <!-- <tr>
+                            <th>Profile Picture</th>
+                            <td><input type="file" id="profilePicture" name="profilePicture"></td>
+                        </tr> -->
+                    </table>
+                    <button type="submit" class="submit-button">Submit</button>
+                </form>
+            </section>
+
+        </div>
+    </div>
+    <script src="stuProfile.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const stuId = urlParams.get('id');
+        document.addEventListener('DOMContentLoaded', fetchProfileDetails);
+
+        function toggleEditMode() {
+            const form = document.getElementById('profileForm');
+            const viewMode = document.getElementById('viewMode');
+            if (form.style.display === 'none') {
+                form.style.display = 'block';
+                viewMode.style.display = 'none';
+            } else {
+                form.style.display = 'none';
+                viewMode.style.display = 'block';
+            }
+        }
+
+        async function fetchProfileDetails() {
+            try {
+                const response = await fetch(`/stuProfileDetails?id=${stuId}`);
+                if (!response.ok) {
+                    if (response.status === 404) {
+                        toggleEditMode();
+                    }
+                    else {
+                        throw new Error('Failed to fetch profile details');
+                    }
+                }
+
+                const profile = await response.json();
+                displayProfileDetails(profile)
+
+            } catch (error) {
+                console.error('Error fetching profile details:', error);
+                // Handle error display or retry logic
+            }
+        }
+
+        async function displayProfileDetails(profile) {
+            const profileContainer = document.getElementById('view-mode-table');
+            profileContainer.innerHTML = `
+                <tr>
+                    <th>Name</th>
+                    <td id="viewName">${profile.name}</td>
+                </tr>
+                <tr>
+                    <th>Rollno</th>
+                    <td id="viewRollno">${profile.Rollno}</td>
+                </tr>
+                <tr>
+                    <th>Program</th>
+                    <td id="viewProgram">${profile.Program}</td>
+                </tr>
+                <tr>
+                    <th>Enrollment Year</th>
+                    <td id="viewEnrollmentYear">${profile.EnrollmentYear}</td>
+                </tr>
+                <tr>
+                    <th>CGPA</th>
+                    <td id="viewCGPA">${profile.CGPA}</td>
+                </tr>
+                <tr>
+                    <th>Backlogs</th>
+                    <td id="viewBacklogs">${profile.Backlogs}</td>
+                </tr>
+                <tr>
+                    <th>Personal Email</th>
+                    <td id="viewPEmail">${profile.PEmail}</td>
+                </tr>
+                <tr>
+                    <th>College Email</th>
+                    <td id="viewCEmail">${profile.CEmail}</td>
+                </tr>
+                <tr>
+                    <th>Phone no</th>
+                    <td id="viewPhoneno">${profile.Phoneno}</td>
+                </tr>
+                <tr>
+                    <th>Sex</th>
+                    <td id="viewSex">${profile.Sex}</td>
+                </tr>
+                <tr>
+                    <th>DOB</th>
+                    <td id="viewDOB">${profile.DOB}</td>
+                </tr>
+                <tr>
+                    <th>Nationality</th>
+                    <td id="viewNationality">${profile.Nationality}</td>
+                </tr>    
+            `;
+            document.getElementById('programName').innerText = profile.Program;
+
+            const editProfileContainer = document.getElementById('edit-mode-table');
+            editProfileContainer.innerHTML = `
+    <tr>
+        <th>Name</th>
+        <td><input type="text" name="name" id="name" placeholder="Enter Full Name" value="${profile.name || ''}"></td>
+    </tr>
+    <tr>
+        <th>Rollno</th>
+        <td><input type="text" name="Rollno" id="Rollno" placeholder="Enter Roll Number (Eg: 2024BCS-001)" pattern="[0-9]{4}[a-zA-Z]{3}-[0-9]{3}" value="${profile.Rollno || ''}"></td>
+    </tr>
+    <tr>
+        <th>Program</th>
+        <td>
+            <select name="Program" id="Program">
+                <option value="Computer Science and Engineering (CSE)" ${profile.Program === 'Computer Science and Engineering (CSE)' ? 'selected' : ''}>Computer Science and Engineering (CSE)</option>
+                <option value="Mathematics and Scientific Computing" ${profile.Program === 'Mathematics and Scientific Computing' ? 'selected' : ''}>Mathematics and Scientific Computing</option>
+                <option value="Electrical and Electronics Engineering (EEE)" ${profile.Program === 'Electrical and Electronics Engineering (EEE)' ? 'selected' : ''}>Electrical and Electronics Engineering (EEE)</option>
+                <option value="IPG - M.Tech" ${profile.Program === 'IPG - M.Tech' ? 'selected' : ''}>IPG - M.Tech</option>
+                <option value="IPG- MBA" ${profile.Program === 'IPG- MBA' ? 'selected' : ''}>IPG- MBA</option>
+                <option value="Masters of Technology (M.Tech)" ${profile.Program === 'Masters of Technology (M.Tech)' ? 'selected' : ''}>Masters of Technology (M.Tech)</option>
+                <option value="Masters of Business Administration" ${profile.Program === 'Masters of Business Administration' ? 'selected' : ''}>Masters of Business Administration</option>
+                <option value="Ph.D" ${profile.Program === 'Ph.D' ? 'selected' : ''}>Ph.D</option>
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <th>Enrollment Year</th>
+        <td><input type="text" name="EnrollmentYear" id="EnrollmentYear" value="${profile.EnrollmentYear || '2022'}"></td>
+    </tr>
+    <tr>
+        <th>CGPA</th>
+        <td><input type="text" name="CGPA" id="CGPA" placeholder="Enter CGPA" value="${profile.CGPA || ''}"></td>
+    </tr>
+    <tr>
+        <th>Backlogs</th>
+        <td><input type="text" name="Backlogs" id="Backlogs" placeholder="Enter no.of Backlogs" value="${profile.Backlogs || ''}"></td>
+    </tr>
+    <tr>
+        <th>Personal Email</th>
+        <td><input type="email" name="PEmail" id="PEmail" placeholder="Enter your Personal E-mail" (Eg: bcs_2024001@iiitm.ac.in) value="${profile.PEmail || ''}"></td>
+    </tr>
+    <tr>
+        <th>College Email</th>
+        <td><input type="email" name="CEmail" id="CEmail" placeholder="Enter your Student Email" pattern="[a-zA-Z]{3}_[0-9]{7}@iiitm.ac.in" value="${profile.CEmail || ''}"></td>
+    </tr>
+    <tr>
+        <th>Phone no</th>
+        <td><input type="text" name="Phoneno" id="Phoneno" placeholder="10-Digit mobile number" pattern='[0-9]{10}' value="${profile.Phoneno || ''}"></td>
+    </tr>
+    <tr>
+        <th>Sex</th>
+        <td>
+            <select name="Sex" id="Sex">
+                <option value="M" ${profile.Sex === 'M' ? 'selected' : ''}>Male</option>
+                <option value="F" ${profile.Sex === 'F' ? 'selected' : ''}>Female</option>
+                <option value="O" ${profile.Sex === 'O' ? 'selected' : ''}>Other</option>
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <th>DOB</th>
+        <td><input type="date" name="DOB" id="DOB" value="${profile.DOB || ''}"></td>
+    </tr>
+    <tr>
+        <th>Nationality</th>
+        <td><input type="text" name="Nationality" id="Nationality" placeholder="Enter Nationality (Eg: Bharateeyudu)" value="${profile.Nationality || ''}"></td>
+    </tr>
+`;
+        }
+
+
+        async function submitChanges(event) {
+            event.preventDefault();  // Prevent default form submission
+
+            const form = document.getElementById('profileForm');
+            const formData = new FormData(form);
+            formData.append('studentId', stuId);
+
+            const requiredFields = [
+                'name', 'Rollno', 'Program', 'EnrollmentYear', 'CGPA', 'Backlogs',
+                'PEmail', 'CEmail', 'Phoneno', 'Sex', 'DOB', 'Nationality'
+            ];
+
+    for (let field of requiredFields) {
+        if (!formData.get(field)) {
+            alert(`Please fill in the ${field} field.`);
+            return;
+        }
+    }
+
+    console.log("formData:",formData)
+            try {
+                const response = await fetch('/update-stu-profile', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                const data = await response.json();
+                // console.log('Success:', data).name;
+                alert('Profile updated successfully!');
+
+                // Update the profile information on the page
+                document.getElementById('viewName').textContent = data.name;
+                document.getElementById('viewRollno').textContent = data.Rollno;
+                document.getElementById('viewProgram').textContent = data.Program;
+                document.getElementById('viewEnrollmentYear').textContent = data.EnrollmentYear;
+                document.getElementById('viewCGPA').textContent = data.CGPA;
+                document.getElementById('viewBacklogs').textContent = data.Backlogs;
+                document.getElementById('viewPEmail').textContent = data.PEmail;
+                document.getElementById('viewCEmail').textContent = data.CEmail;
+                document.getElementById('viewPhoneno').textContent = data.Phoneno;
+
+                document.getElementById('viewSex').textContent = data.Sex;
+                document.getElementById('viewDOB').textContent = data.DOB;
+                document.getElementById('viewNationality').textContent = data.Nationality;
+
+                // Update other fields similarly
+
+                // Toggle view mode back
+                toggleEditMode();
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred while updating the profile');
+            }
+        }
+
+        
+      
+
+        document.getElementById('applied-jobs').addEventListener('click', () => {
+            window.location.href = `/stuAppliedJobs?id=${stuId}`;
+        })
+        document.getElementById('home-btn').addEventListener('click', () => {
+            window.location.href = `/homestu?id=${stuId}`;
+        })
+        document.getElementById('jobs-btn').addEventListener('click', () => {
+            window.location.href = `/stuhome?id=${stuId}`;
+        })
+
+        document.addEventListener('DOMContentLoaded', async () => {
+           
+        
+            if (stuId) {
+                try {
+                    const response = await fetch(`/student/${stuId}`);
+                    if (response.ok) {
+                        const data = await response.json();
+                        document.getElementById('studentName').textContent = `${data.name}`;
+                    } else {
+                        document.getElementById('studentName').textContent = 'Student not found';
+                    }
+                } catch (error) {
+                    console.error('Error fetching student details:', error);
+                    document.getElementById('studentName').textContent = 'Error fetching student details';
+                }
+            } else {
+                document.getElementById('studentName').textContent = 'No student ID provided';
+            }
+        });
+        document.addEventListener('DOMContentLoaded', () => {
+            const logoutBtn = document.querySelector('#logout-btn'); // Assuming there's a logout button with this ID
+        
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', async (event) => {
+                    event.preventDefault();
+        
+                    try {
+                        const response = await fetch('/logout', { method: 'GET' });
+        
+                        if (response.ok) {
+                            alert('Logout successful!');
+                            window.location.href = '/';
+                        } else {
+                            alert('Error logging out. Please try again.');
+                        }
+                    } catch (error) {
+                        console.error('Error:', error);
+                        alert('An error occurred during logout. Please try again.');
+                    }
+                });
+            }
+        });
+        window.addEventListener('pageshow', function (event) {
+            if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
+                // If coming back to the page from cache, reload the page
+                window.location.reload();
+            }
+        });
+
+    </script>
+</body>
+
+</html>

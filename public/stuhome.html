@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        body {
+            background-color: #f5f5f5;
+        }
+
+        #backToTopBtn {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 99;
+            font-size: 18px;
+            border: none;
+            outline: none;
+            background-color: #140878;
+            color: white;
+            cursor: pointer;
+            padding: 15px;
+            border-radius: 40%;
+        }
+
+        #backToTopBtn:hover {
+            background-color: #0056b3;
+        }
+
+        .sidebar {
+            min-height: 100vh;
+            height: auto;
+            background-color: #140878;
+            color: white;
+            padding-top: 20px;
+        }
+
+        .sidebar a {
+            color: white;
+            text-decoration: none;
+            display: block;
+            padding: 10px 20px;
+            font-size: 1.1em;
+        }
+
+        .sidebar a:hover {
+            background-color: #4839d5;
+        }
+
+        .dashboard-content {
+            padding: 20px;
+        }
+
+        .details-button {
+            background-color: rgb(75, 75, 193);
+            color: white;
+            border: none;
+            height: 60px;
+            width: 100%;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        .details-button:hover {
+            background-color: #140878;
+        }
+
+        .log {
+            background-color: #140878;
+            color: white;
+        }
+
+        .log:hover {
+            background-color: #4839d5;
+        }
+
+        #job-cards-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            padding: 20px;
+            width: calc(100%);
+        }
+
+        .job-card {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            width: calc(33.33% - 15px);
+            padding: 20px;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .job-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .job-card:nth-child(odd) {
+            background-color: #6d9cb3;
+            color: white;
+            border: rgb(216, 237, 248) 4px solid;
+        }
+
+        .job-card:nth-child(odd) .company-name,
+        .job-card:nth-child(odd) .job-package,
+        .job-card:nth-child(odd) .job-description,
+        .job-card:nth-child(odd) .job-type {
+            color: white;
+        }
+
+        .job-card:nth-child(even) {
+            border: #6d9cb3 4px solid;
+        }
+
+        .job-card h2 {
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+
+        .job-card .company-name {
+            font-size: 1rem;
+            color: #666;
+        }
+
+        .job-card .job-package {
+            font-size: 0.9rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .job-card .job-description {
+            font-size: 0.9rem;
+            justify-content: center;
+            color: #444;
+        }
+
+        .job-type {
+            font-size: 12px;
+            line-height: 1.33333333;
+            font-weight: 500;
+            padding: 2px 6px;
+            background-color: #EEE;
+            border-radius: 4px;
+            color: #666;
+        }
+
+        .job-card:nth-child(odd) .job-type {
+            background-color: #113065;
+        }
+
+        .top-navbar {
+            display: none; 
+            padding: 0 20px;
+            background-color: #140878;
+        }
+
+        .navbar-toggler {
+            margin: 10px;
+            position: absolute;
+            left: 20px;
+            top: 10px;
+            z-index: 1050;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+
+            .top-navbar {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .navbar-toggler {
+                margin: 10px;
+                position: static;
+                margin-right: auto;
+            }
+
+            .job-card {
+                width: calc(50% - 20px);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .job-card {
+                width: 100%;
+            }
+            .top-navbar {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .navbar-toggler {
+                margin: 10px;
+                position: static;
+                margin-right: auto;
+            }
+        }
+        
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark top-navbar">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" id="top-home-btn"><i class="fas fa-home"></i> Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="top-applied-jobs"><i class="fas fa-tasks"></i> Applied Jobs</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="top-profile-btn"><i class="fas fa-user"></i> My Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="top-logout-btn"><i class="fas fa-sign-out-alt"></i> Log Out</a>
+                </li>
+            </ul>
+        </div>
+    </nav>    
+
+    <div class="container-fluid">
+        <div class="row">
+            <nav class="col-md-2 d-none d-md-block sidebar" id="nav-bar">
+                <div class="text-center mb-4">
+                    <img src="images/logo-white-Photoroom.png" alt="University Logo" class="img-fluid mb-4" style="margin-top: 40px;">
+                    <a ><i class="fa-solid fa-briefcase"></i> Jobs</a>
+                    <a id="home-btn"><i class="fas fa-home"></i> Home</a>
+                    <a id="applied-jobs"><i class="fas fa-tasks"></i> Applied Jobs</a>
+                    <a id="profile-btn"><i class="fas fa-user"></i> My Profile</a>
+                    <a id="logout-btn"><i class="fas fa-sign-out-alt"></i> Log Out</a>
+                </div>
+            </nav>
+
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                <div class="dashboard-content">
+                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                        <h1 class="h2" id="studentName"></h1>
+                    </div>
+                    <h2 class="mt-4">Jobs</h2>
+                    <div id="job-cards-container" class="col-lg-12"></div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Back to Top Button -->
+    <button id="backToTopBtn" title="Go to top"><i class="fas fa-arrow-up"></i></button>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchDrives();
+        });
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const stuId = urlParams.get('id');
+
+        document.getElementById('home-btn').addEventListener('click', () => {
+            window.location.href = `/homestu?id=${stuId}`;
+        });
+        document.getElementById('applied-jobs').addEventListener('click', () => {
+            window.location.href = `/stuAppliedJobs?id=${stuId}`;
+        });
+        document.getElementById('profile-btn').addEventListener('click', () => {
+            window.location.href = `/stuProfile?id=${stuId}`;
+        });
+        document.getElementById('top-home-btn').addEventListener('click', () => {
+            window.location.href = `/homestu?id=${stuId}`;
+        });
+        document.getElementById('top-applied-jobs').addEventListener('click', () => {
+            window.location.href = `/stuAppliedJobs?id=${stuId}`;
+        });
+        document.getElementById('top-profile-btn').addEventListener('click', () => {
+            window.location.href = `/stuProfile?id=${stuId}`;
+        });
+        document.getElementById('')
+
+        let backToTopBtn = document.getElementById("backToTopBtn");
+
+        window.onscroll = function () {
+            scrollFunction();
+        };
+
+        function scrollFunction() {
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                backToTopBtn.style.display = "block";
+            } else {
+                backToTopBtn.style.display = "none";
+            }
+        }
+
+        backToTopBtn.addEventListener("click", function () {
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+        });
+
+        async function fetchDrives() {
+            try {
+                const urlParams = new URLSearchParams(window.location.search);
+                const stuId = urlParams.get('id');
+                const response = await fetch('http://localhost:5500/recdrives');
+                const combined_drives = await response.json();
+
+                renderDrives(combined_drives, stuId);
+            } catch (error) {
+                console.error('Error fetching drives:', error);
+            }
+        }
+
+        function notifyNewJobs(newDrives) {
+            if (newDrives.length === 0) return;
+
+            let index = 0;
+
+            function showNextNotification() {
+                const drive = newDrives[index];
+                Swal.fire({
+                    title: 'New Job Posted!',
+                    text: `${drive.designations.join(", ")} at ${drive.name}`,
+                    icon: 'info',
+                    showCancelButton: true,
+                    confirmButtonText: 'View Details',
+                    cancelButtonText: 'Close'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        goToDetails(drive._id);
+                    }
+
+                    index++;
+                    if (index < newDrives.length) {
+                        showNextNotification();
+                    }
+                });
+            }
+
+            showNextNotification();
+        }
+
+        function renderDrives(combined_drives, userId) {
+            const jobsContainer = document.getElementById('job-cards-container');
+
+            jobsContainer.innerHTML = '';
+
+            const currentDate = new Date();
+            const newAcceptedDrives = [];
+
+            fetch(`/notifiedDrives/${userId}`)
+                .then(response => response.json())
+                .then(previousNotifiedDrives => {
+                    combined_drives.forEach((drive) => {
+                        if (!drive.isAccepted) {
+                            return;
+                        }
+
+                        const driveDate = new Date(drive.dateOfDrive);
+                        const daysDifference = (currentDate - driveDate) / (1000 * 60 * 60 * 24);
+
+                        if (daysDifference > 90) {
+                            return;
+                        }
+
+                        const isNew = !previousNotifiedDrives.some(prevDriveId => prevDriveId === drive._id.toString());
+                        if (isNew) {
+                            newAcceptedDrives.push(drive);
+                        }
+
+                        const driveElement = document.createElement('div');
+                        driveElement.className = 'job-card';
+                        driveElement.innerHTML = `
+                            <h2>${drive.designations.join(", ")}</h2>
+                            <p class="company-name">${drive.name}</p>
+                            <br>
+                            <p class="job-package">${drive.min} LPA - ${drive.max} LPA</p>
+                            <br>
+                            <p class="job-description">${drive.jobDescription}</p>
+                            <div>
+                                <span class="job-type">${drive.jobType}</span>
+                            </div>
+                        `;
+
+                        driveElement.addEventListener('click', () => {
+                            goToDetails(drive._id);
+                        });
+
+                        jobsContainer.appendChild(driveElement);
+                    });
+
+                    if (newAcceptedDrives.length > 0) {
+                        notifyNewJobs(newAcceptedDrives);
+                        updateNotifiedDrives(userId, newAcceptedDrives.map(drive => drive._id));
+                    }
+                })
+                .catch(error => console.error('Error fetching notified drives:', error));
+        }
+
+        function updateNotifiedDrives(userId, newDrives) {
+            fetch(`/notifiedDrives/${userId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ newDrives })
+            }).catch(error => console.error('Error updating notified drives:', error));
+        }
+
+        function goToDetails(driveId) {
+            window.location.href = `/StuDrive?did=${driveId}&sid=${stuId}`;
+        }
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const studentId = urlParams.get('id');
+
+            if (studentId) {
+                try {
+                    const response = await fetch(`/student/${studentId}`);
+                    if (response.ok) {
+                        const data = await response.json();
+                        document.getElementById('studentName').textContent = `Welcome back, ${data.name} !`;
+                    } else {
+                        document.getElementById('studentName').textContent = 'Student not found';
+                    }
+                } catch (error) {
+                    console.error('Error fetching student details:', error);
+                    document.getElementById('studentName').textContent = 'Error fetching student details';
+                }
+            } else {
+                document.getElementById('studentName').textContent = 'No student ID provided';
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const logoutBtn = document.querySelector('#logout-btn');
+            const logoutBtn2 = document.querySelector('#top-logout-btn');
+        
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', async (event) => {
+                    event.preventDefault();
+        
+                    try {
+                        const response = await fetch('/logout', { method: 'GET' });
+        
+                        if (response.ok) {
+                            alert('Logout successful!');
+                            window.location.href = '/';
+                        } else {
+                            alert('Error logging out. Please try again.');
+                        }
+                    } catch (error) {
+                        console.error('Error:', error);
+                        alert('An error occurred during logout. Please try again.');
+                    }
+                });
+            }
+
+            if (logoutBtn2) {
+                logoutBtn2.addEventListener('click', async (event) => {
+                    event.preventDefault();
+        
+                    try {
+                        const response = await fetch('/logout', { method: 'GET' });
+        
+                        if (response.ok) {
+                            alert('Logout successful!');
+                            window.location.href = '/';
+                        } else {
+                            alert('Error logging out. Please try again.');
+                        }
+                    } catch (error) {
+                        console.error('Error:', error);
+                        alert('An error occurred during logout. Please try again.');
+                    }
+                });
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            async function checkSession() {
+                try {
+                    const response = await fetch('/check-session', { method: 'GET' });
+                    if (response.ok) {
+                        const result = await response.json();
+                        const currentPath = window.location.pathname;
+
+                        if (currentPath !== '/stuhome') {
+                            window.location.href = `/stuhome?id=${result.id}`;
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error checking session:', error);
+                }
+            }
+            checkSession();
+        });
+
+        window.addEventListener('pageshow', function (event) {
+            if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
+                window.location.reload();
+            }
+        });
+    </script>
+</body>
+
+</html>

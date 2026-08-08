@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create New Drive</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+       
+        .container {
+            display: flex;
+            direction: column;
+           /* height: 100vh;*/
+           height: auto;
+        }
+      
+          .sidebar {
+            width: 17vw;
+            background-color: #140878;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: auto;
+        }
+      
+        .logo img {
+            width: 180px;
+            height: auto;
+            color: white;
+        }
+      
+        .profile {
+            display: flex;
+            align-items: center;
+            margin: 40px 0;
+        }
+      
+        .profile-logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+            color: white;
+        }
+      
+        .profile-info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+      
+        .profile-name {
+            font-weight: bold;
+            color: white;
+        }
+      
+        .profile-role {
+            font-size: 0.9em;
+            color: white;
+        }
+      
+        .nav-menu ul {
+            list-style: none;
+            width: 100%;
+        }
+      
+        .nav-menu li {
+           
+            padding: 5px 0;
+        }
+      
+        .nav-menu a {
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+            display: block;
+            padding: 10px 0;
+            border-radius: 5px;
+            width: 100%;
+            text-align: center;
+        }
+      
+        .nav-menu a.active,
+        .nav-menu a:hover {
+            background-color: #655dad;
+        }
+      
+        .main-content {
+            flex-grow: 1;
+      background-color: #fff;
+      overflow-y: auto;
+      overflow-x: hidden;
+     margin-top: -57%;
+     padding-left: 3%;
+        }
+        .header {
+            background-color: #ffffff;
+            padding: 20px;
+            border-bottom: 2px solid #eaeaea;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .btn-custom {
+            background-color: #140878;
+            color: black;
+        }
+        .btn-custom:hover {
+            background-color: #4839d5;
+            color: black;
+        }
+        .badge {
+            background-color: red;
+            color: white;
+        }
+        .badge-secondary {
+            background-color: #e6e6e6;
+            color: #333;
+        }
+        .badge-secondary i {
+            cursor: pointer;
+        }
+        .badge-secondary i:hover {
+            color: red;
+        }
+        .header span {
+            background-color: red;
+            border-radius: 50%;
+            color: white;
+            padding: 2px 6px;
+        }
+        .remove-badge {
+            cursor: pointer;
+        }
+        .sub-options {
+            display: none;
+            margin-top: 5px;
+            padding-left: 20px;
+        }
+        .sub-options.visible {
+            display: block;
+        }
+        
+        
+        /* Responsive Styles */
+        @media (max-width: 1224px) {
+            
+        
+            .sidebar {
+                width: 100%;
+                padding: 10px;
+                height: 100px;
+                flex-direction: row;
+                border-radius: 10px;
+                justify-content: space-between;
+            }
+        
+            .profile {
+                flex-direction: row;
+                align-items: center;
+                margin-left: 20px;
+            }
+        
+            .logo,.profile-role
+             { /* Hide logo and recruiter name */
+                display: none;
+            }
+        
+            .nav-menu ul {
+                display: flex;
+                flex-direction: row; /* Arrange nav items in row */
+                padding: 0;
+                margin: 0;
+            }
+        
+            .nav-menu li {
+                padding: 0 10px;
+            }
+        
+            .nav-menu a {
+                padding: 10px 15px;
+                text-align: center;
+            }
+        
+            .main-content {
+                margin-top: 20px;
+                margin-left: -23%;
+                width: 100vw;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                padding: 10px;
+                height: 100px;
+                flex-direction: row;
+                border-radius: 10px;
+                justify-content: space-between;
+            }
+        
+            .profile {
+                flex-direction: row;
+                align-items: center;
+            }
+        
+            .nav-menu ul {
+                flex-direction: row;
+            }
+        
+            .nav-menu li {
+                padding: 0 5px;
+            }
+        
+            .nav-menu a {
+                padding: 8px 10px;
+                text-align: center;
+            }
+        
+            .main-content {
+                margin-top: 20px;
+               width: 100%;
+               margin-left: 0px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                flex-direction: column;
+            }
+        
+            .sidebar {
+                width: 100%;
+                padding: 10px;
+                flex-direction: row;
+                justify-content: space-between;
+            }
+        
+            .profile {
+                flex-direction: row;
+                align-items: center;
+            }
+        
+            .nav-menu ul {
+                flex-direction: row;
+            }
+        
+            .nav-menu li {
+                padding: 0 5px;
+            }
+        
+            .nav-menu a {
+                padding: 8px 10px;
+                text-align: center;
+            }
+        
+            .main-content {
+                margin-top: 20px;
+                padding-left: 3%;
+            }
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="sidebar">
+            
+                <img src="images/logo-white-Photoroom.png" alt="IIITM University" class="img-fluid mb-3 logo" style="padding-top:30px;width:118%;height:33%">
+           
+              <div class="profile">
+                
+                <div class="profile-info" style="text-align: center;">
+                    <h2 class="profile-name" id="recruiterName"></h2>
+                    <h3 class="profile-role" style="padding-top: 30px;font-size:24px"><b>Recruiter</b></h3>
+                </div>
+              </div>
+              <nav class="nav-menu">
+                <ul>
+                    <li id="drives-btn"><a href="#" class="active">Drives</a></li>
+                    <li id="home-btn"><a href="#">Home</a></li>
+                    <li id="newdrive"><a href="#">Create New Drive</a></li>
+                    <li id="logout-btn"><a href="/logout" >Logout</a></li>
+                </ul>
+              </nav>
+            </div>
+            <main class="col-md-10 ms-sm-auto col-lg-10 px-md-4">
+                <div class="main-content">
+                    <div class="header d-flex justify-content-between align-items-center">
+                        <h1>Create New Drive</h1>
+                    </div>
+                    <form id="driveForm">
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <label for="jobType"><strong>Job Type</strong></label>
+                                <div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="jobType" id="internship" value="Internship">
+                                        <label class="form-check-label" for="internship">Internship</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="jobType" id="fullTime" value="FullTime">
+                                        <label class="form-check-label" for="fullTime">Full Time</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <label for="name"><strong>Company Name</strong></label>
+                                <input type="text" class="form-control" id="name">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <label for="programs"><strong>Programs</strong></label>
+                                <div>
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="bachelor" value="bachelor" onchange="toggleSubOptions('bachelor')">
+                                        <label class="custom-control-label" for="bachelor">Bachelors</label>
+                                        <div class="sub-options" id="bachelorOptions">
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input" id="cse" value="Computer Science and Engineering (CSE)">
+                                                <label class="custom-control-label" for="cse">Computer Science and Engineering (CSE)</label>
+                                            </div>
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input" id="msc" value="Mathematics and Scientific Computing">
+                                                <label class="custom-control-label" for="msc">Mathematics and Scientific Computing</label>
+                                            </div>
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input" id="eee" value="Electrical and Electronics Engineering (EEE)">
+                                                <label class="custom-control-label" for="eee">Electrical and Electronics Engineering (EEE)</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="master" value="master" onchange="toggleSubOptions('master')">
+                                        <label class="custom-control-label" for="master">Masters</label>
+                                        <div class="sub-options" id="masterOptions">
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input" id="mtech" value="Masters of Technology (M.Tech)">
+                                                <label class="custom-control-label" for="mtech">Masters of Technology (M.Tech)</label>
+                                            </div>
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input" id="mba" value="Masters of Business Administration">
+                                                <label class="custom-control-label" for="mba">Masters of Business Administration</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="associate" value="associate" onchange="toggleSubOptions('associate')">
+                                        <label class="custom-control-label" for="associate">IPG</label>
+                                        <div class="sub-options" id="associateOptions">
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input" id="imt" value="IPG - M.Tech">
+                                                <label class="custom-control-label" for="imt">IPG - M.Tech</label>
+                                            </div>
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input" id="ipgmba" value="IPG- MBA">
+                                                <label class="custom-control-label" for="ipgmba">IPG- MBA</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="phd" value="Ph.D">
+                                        <label class="custom-control-label" for="phd">Ph.D</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <label for="batch"><strong>Batch</strong></label>
+                                <input type="number" class="form-control" id="batch" placeholder="YYYY" value="2024" pattern="[0-9]{4}" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <label><strong>Criteria</strong></label>
+                                <div class="form-check">
+                                    <label class="form-check-label" for="cgpaCriteria">
+                                        CGPA
+                                    </label>
+                                    <input type="text" class="form-control mt-2" id="cgpaCriteria" placeholder="Enter Eligible CGPA" min="0" step="1">
+                                </div>
+                                <div class="form-check mt-2">
+                                    <label class="form-check-label" for="backlogsCriteria">
+                                        Backlogs
+                                    </label>
+                                    <input type="number" class="form-control mt-2" id="backlogsCriteria" placeholder="Enter Max No. of Backlogs" min="0">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <label><strong>Package</strong></label>
+                                <div class="form-check">
+                                    <label class="form-check-label" for="minPackage">
+                                        Minimum
+                                    </label>
+                                    <input type="number" class="form-control mt-2" id="minPackage" placeholder="Enter Min. Package (LPA)" min="0" step="0.1">
+                                </div>
+                                <div class="form-check mt-2">
+                                    <label class="form-check-label" for="maxPackage">
+                                        Maximum
+                                    </label>
+                                    <input type="number" class="form-control mt-2" id="maxPackage" placeholder="Enter Max. Package (LPA)" min="0" step="0.1">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <label for="dateOfDrive"><strong>Date of Drive</strong></label>
+                                <input type="date" class="form-control" id="dateOfDrive" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <label for="lastDateOfApplication"><strong>Last Date of Application</strong></label>
+                                <input type="date" class="form-control" id="lastDateOfApplication" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <label for="designations"><strong>Designations</strong></label>
+                                <div id="designations">
+                                    <div class="input-group mb-2">
+                                        <input type="text" class="form-control designation" name="designation" placeholder="Enter Designation">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text remove-badge" onclick="removeDesignation(this)">&times;</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-sm btn-outline-primary" onclick="addDesignation()">Add Designation</button>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <label for="jobDescription"><strong>Job Description</strong></label>
+                                <textarea class="form-control textarea-box" id="jobDescription" placeholder="Enter the job description here..."></textarea>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <button type="submit" class="btn btn-custom mt-3" style="color: white;">Create Drive</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </main>
+        </div>
+    </div>
+    <script>
+        function toggleSubOptions(program) {
+            const options = document.getElementById(program + 'Options');
+            if (options) {
+                options.classList.toggle('visible');
+            }
+        }
+
+        function addDesignation() {
+            const designationsDiv = document.getElementById('designations');
+            const newDesignationDiv = document.createElement('div');
+            newDesignationDiv.classList.add('input-group', 'mb-2');
+
+            newDesignationDiv.innerHTML = `
+                <input type="text" class="form-control designation" name="designation" placeholder="Enter Designation">
+                <div class="input-group-append">
+                    <span class="input-group-text remove-badge" onclick="removeDesignation(this)">&times;</span>
+                </div>
+            `;
+
+            designationsDiv.appendChild(newDesignationDiv);
+        }
+
+        function removeDesignation(element) {
+            element.parentElement.parentElement.remove();
+        }
+
+        document.getElementById('driveForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            const cgpaCriteria = document.getElementById('cgpaCriteria').value;
+            const backlogsCriteria = document.getElementById('backlogsCriteria').value;
+            const minPackage = document.getElementById('minPackage').value;
+            const maxPackage = document.getElementById('maxPackage').value;
+            const urlParams=new URLSearchParams(window.location.search)
+            const id= urlParams.get('id')
+
+            const formData = {
+                    jobType: document.querySelector('input[name="jobType"]:checked').value, 
+                    name: document.getElementById('name').value,
+                    programs: collectCheckedValues(['cse', 'msc','eee','imt','ipgmba','mtech','mba', 'phd']),
+                    batch: document.getElementById('batch').value,
+                    cgpa: cgpaCriteria,
+                    backlogs: backlogsCriteria,
+                    min: minPackage,
+                    max: maxPackage,
+                    dateOfDrive: document.getElementById('dateOfDrive').value,
+                    lastDateOfApplication: document.getElementById('lastDateOfApplication').value,
+                    designations: collectDesignations(),
+                    jobDescription: document.getElementById('jobDescription').value,
+                    isAccepted:false,
+                    isRejected:false,
+                    isCompleted:false,
+                    recid:id,
+                    resultsDeclared:'false'
+                };
+    
+                // Post data to server
+                fetch('/create-drive', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Success:', data);
+                    alert('Drive created successfully!');
+                    window.location.href = `/rechome?id=${id}`; // Redirect to dashboard or appropriate page
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred while creating the drive');
+                });
+            });
+
+
+            // Further processing (e.g., sending to the server) can be done here
+        function collectCheckedValues(ids) {
+            const values = [];
+            ids.forEach(id => {
+                const checkbox = document.getElementById(id);
+                if (checkbox && checkbox.checked) {
+                    values.push(checkbox.value);
+                }
+            });
+            return values;
+        }
+
+        function collectDesignations() {
+            const designations = [];
+            const designationElements = document.querySelectorAll('.designation');
+            designationElements.forEach(element => {
+                if (element.value) {
+                    designations.push(element.value);
+                }
+            });
+            return designations;
+        }
+
+        /*document.getElementById('recHome').addEventListener('click', (e)=> {
+            e.preventDefault();
+            
+            const urlParams = new URLSearchParams(window.location.search)
+            const recid = urlParams.get('id')
+
+            window.location.href= `/rechome.html?id=${recid}`;
+        })*/
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const urlParams = new URLSearchParams(window.location.search)
+            const recId = urlParams.get('id')
+
+        
+            if (recId) {
+                try {
+                    const response = await fetch(`/recruiter/${recId}`);
+                    if (response.ok) {
+                        const data = await response.json();
+                        document.getElementById('recruiterName').textContent = `${data.name}`;
+                    } else {
+                        document.getElementById('recruiterName').textContent = 'Recruiter not found';
+                    }
+                } catch (error) {
+                    console.error('Error fetching recruiter details:', error);
+                    document.getElementById('recruiterName').textContent = 'Error fetching recruiter details';
+                }
+            } else {
+                document.getElementById('recruiterName').textContent = 'No recruiter ID provided';
+            }
+        });
+        const urlParams = new URLSearchParams(window.location.search)
+        const recid = urlParams.get('id')
+        document.getElementById('home-btn').addEventListener('click', () => {
+            window.location.href = `/homerec?id=${recid}`;
+        })
+        document.getElementById('drives-btn').addEventListener('click', () => {
+          window.location.href = `/rechome?id=${recid}`;
+      })
+    
+        const newdrive=document.getElementById('newdrive')
+        newdrive.addEventListener('click',()=>{
+            window.location.href=`/createdrive?id=${recid}`
+        })
+       
+        document.addEventListener('DOMContentLoaded', () => {
+            const logoutBtn = document.querySelector('#logout-btn'); // Assuming there's a logout button with this ID
+          
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', async (event) => {
+                    event.preventDefault();
+          
+                    try {
+                        const response = await fetch('/logout', { method: 'GET' });
+          
+                        if (response.ok) {
+                            alert('Logout successful!');
+                            window.location.href = '/';
+                        } else {
+                            alert('Error logging out. Please try again.');
+                        }
+                    } catch (error) {
+                        console.error('Error:', error);
+                        alert('An error occurred during logout. Please try again.');
+                    }
+                });
+            }
+          });
+          window.addEventListener('pageshow', function (event) {
+            if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
+                // If coming back to the page from cache, reload the page
+                window.location.reload();
+            }
+          }); 
+    </script>
+</body>
+</html>

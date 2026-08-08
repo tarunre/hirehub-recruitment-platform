@@ -1,0 +1,153 @@
+#procedure{
+  background-color: #e7f3f9;
+  font-family: Arial, sans-serif;
+}
+#rec{
+  text-align: center;
+  position: relative;
+  top: 30px;
+  margin-bottom: 90px;
+}
+.timeline {
+  position: relative;
+  margin: 50px 0;
+  padding: 40px 0;
+  background-color: #e7f3f9;
+}
+
+.timeline-container {
+  position: relative;
+  width: 100%;
+  padding-left: 50px;
+  padding-right: 50px;
+}
+
+.timeline-item {
+  position: relative;
+  padding: 20px 30px;
+  background: linear-gradient(to right, #4e54c8, #8f94fb);
+  color: #fff;
+  border-radius: 6px;
+  width: 40%;
+  margin-bottom: 50px;
+  box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+.timeline-item.left {
+  left: 0;
+}
+
+.timeline-item.right {
+  left: 60%;
+}
+
+.timeline-item::before {
+  content: "";
+  position: absolute;
+  width: 25px;
+  height: 25px;
+  right: -12.5px;
+  background-color: #fff;
+  border: 4px solid #1b096d;
+  top: 15px;
+  border-radius: 50%;
+  z-index: 1;
+}
+
+.timeline-item.left::before {
+  left: -12.5px;
+  right: auto;
+}
+
+.timeline-content {
+  padding: 20px;
+  background-color: #1b096d;
+  border-radius: 6px;
+}
+
+.timeline-content h4 {
+  margin-bottom: 10px;
+  font-size: 20px;
+  color: #ffffff;
+}
+
+.timeline-content p {
+  margin-bottom: 0;
+  font-size: 16px;
+  color: #ffffff;
+}
+
+.timeline-content a {
+  color: #add8e6;
+  text-decoration: underline;
+}
+.timeline::before {
+  content: '';
+  position: absolute;
+  width: 4px;
+  background-color: #1b096d;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  margin-left: -2px;
+  z-index: 0;
+}
+
+.timeline-item::after {
+  content: '';
+  position: absolute;
+  top: 20px; /* Adjust if necessary to center the arrow vertically */
+  width: 0;
+  height: 0;
+  border-style: solid;
+}
+
+.timeline-item.left::after {
+  right: -25px; /* Adjust the position if necessary */
+  border-width: 10px 0 10px 14px; /* Increased the size */
+  border-color: transparent transparent transparent #1b096d;
+}
+
+.timeline-item.right::after {
+  left: -25px; /* Adjust the position if necessary */
+  border-width: 10px 14px 10px 0; /* Increased the size */
+  border-color: transparent #1b096d transparent transparent;
+}
+
+@media screen and (max-width: 768px) {
+  .timeline-item {
+      width: 100%;
+      left: 0;
+      padding-left: 30px;
+  }
+
+  .timeline-item.right {
+      left: 0;
+  }
+
+  .timeline-container {
+      padding-left: 60px;
+      padding-right: 20px;
+  }
+
+  .timeline-item::before {
+      /* left: -25px; */
+      left: auto;
+  }
+  .timeline::before {
+    left: 30px;
+    margin-left: 0;
+}
+.timeline-item.left::before {
+  /* left: -25px; */
+  left: 424px;
+}
+
+.timeline-item.left::after,
+.timeline-item.right::after {
+  left: -25px; /* Arrows aligned to the left for both items */
+  right: auto;
+  border-width: 10px 14px 10px 0;
+  border-color: transparent #1b096d transparent transparent;
+}
+}
